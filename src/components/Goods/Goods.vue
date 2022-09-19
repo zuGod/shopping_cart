@@ -27,6 +27,11 @@
 <script>
 export default {
   props:{
+    //将来子组件中商品的勾选状态变化之后，需要通过子传父的形式，通过父组件根据id修改对应商品的勾选状态
+    id:{
+      required:true,
+      type:Number
+    },
     title:{
       default:'',
       type:String
