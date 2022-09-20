@@ -1,5 +1,5 @@
 <template>
-  <div class="header-container">标题</div>
+  <div class="header-container">shopping cart</div>
 </template>
 
 <script>

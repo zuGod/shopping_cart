@@ -3,8 +3,9 @@
     <Header></Header>
     <!-- 循环渲染goods里面的信息 -->
     <Goods v-for="item in list" :key="item.id" :id="item.id" :title="item.goods_name" :pic="item.goods_img" 
-    :price="item.goods_price" :status="item.goods_state"></Goods>
-    <h1>App 根组件</h1>
+    :price="item.goods_price" :status="item.goods_state"
+      @count-change="getNewState"></Goods>
+      <Footer></Footer>
   </div>
 </template>
 
@@ -13,10 +14,12 @@
 import axios from 'axios'
 import Header from './components/Header/Header.vue'
 import Goods from './components/Goods/Goods.vue'
+import Footer from './components/Footer/Footer.vue'
 export default {
   components:{
     Header,
     Goods,
+    Footer,
   },
   data(){
     return {
@@ -32,6 +35,17 @@ export default {
         this.list = res.list
       }
     },
+    //e的格式为{id,value}
+    getNewState(e){
+      console.log(1)
+      this.list.some(item =>{
+        if(item.id === e.id){
+          item.goods_state = e.value
+          //终止后续的循环
+          return true
+        }
+      })
+    }
   },
   created(){
     this.initCartList()

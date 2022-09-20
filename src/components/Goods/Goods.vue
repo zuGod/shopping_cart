@@ -4,8 +4,9 @@
     <div class="thumb">
       <div class="custom-control custom-checkbox">
         <!-- 复选框 -->
-        <input type="checkbox" class="custom-control-input" id="cb1" :checked="status" />
-        <label class="custom-control-label" for="cb1">
+        <input type="checkbox" class="custom-control-input" :id="'cb'+ id" :checked="status" 
+          @change="stateChange"/>
+        <label class="custom-control-label" :for="'cb' + id">
           <!-- 商品的缩略图 -->
           <img :src="pic" alt="" />
         </label>
@@ -47,6 +48,15 @@ export default {
     status:{
       default:true,
       type:Boolean
+    }
+  },
+  methods:{
+    //只要复选框的选中状态发生了变化，就会调用这个处理函数
+    stateChange(e){
+      
+      const newState = e.target.checked
+      //触发自定义事件
+      this.$emit('count-change',{id:this.id, value:newState})
     }
   }
 }
