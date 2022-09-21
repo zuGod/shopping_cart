@@ -5,7 +5,7 @@
     <Goods v-for="item in list" :key="item.id" :id="item.id" :title="item.goods_name" :pic="item.goods_img" 
     :price="item.goods_price" :status="item.goods_state"
       @count-change="getNewState"></Goods>
-      <Footer></Footer>
+      <Footer :fullState="fullState"></Footer>
   </div>
 </template>
 
@@ -24,6 +24,12 @@ export default {
   data(){
     return {
       list:[],
+    }
+  },
+  computed:{
+    //动态计算全选的状态是true韩式false
+    fullState(){
+      return this.list.every(item => item.goods_state)
     }
   },
   methods:{
