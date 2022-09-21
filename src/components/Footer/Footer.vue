@@ -28,7 +28,7 @@ export default {
       default:'',
       type:Number
     },
-    countNum:{
+    countNum:{ 
       default:'',
       type:Number
     }
