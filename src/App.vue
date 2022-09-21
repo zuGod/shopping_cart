@@ -3,9 +3,9 @@
     <Header></Header>
     <!-- 循环渲染goods里面的信息 -->
     <Goods v-for="item in list" :key="item.id" :id="item.id" :title="item.goods_name" :pic="item.goods_img" 
-    :price="item.goods_price" :status="item.goods_state"
+    :price="item.goods_price" :status="item.goods_state" :count="item.goods_count"
       @count-change="getNewState"></Goods>
-      <Footer :fullState="fullState"></Footer>
+      <Footer :fullState="fullState" @checked-change="getNewChecked" :amt="amt" :countNum="countNum"></Footer>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import axios from 'axios'
 import Header from './components/Header/Header.vue'
 import Goods from './components/Goods/Goods.vue'
 import Footer from './components/Footer/Footer.vue'
+import bus from './components/eventBus'
 export default {
   components:{
     Header,
@@ -30,6 +31,18 @@ export default {
     //动态计算全选的状态是true韩式false
     fullState(){
       return this.list.every(item => item.goods_state)
+    },
+    amt(){
+      //1.先过滤
+      //2.再reduce累加
+      return this.list.filter(item => item.goods_state).reduce((total,item) => {
+        return total += item.goods_price * item.goods_count
+      },0)
+    },
+    countNum(){
+      return this.list.filter(item => item.goods_state).reduce((num,item) => {
+        return num += item.goods_count
+      },0)
     }
   },
   methods:{
@@ -51,10 +64,31 @@ export default {
           return true
         }
       })
-    }
+    },
+    getNewChecked(e){
+      this.list.forEach((item) => {
+        item.goods_state = e.value
+      })
+    },
   },
   created(){
-    this.initCartList()
+    this.initCartList();
+
+    bus.$on('share',val => {
+      this.list.some(item => {
+        if(item.id === val.id){
+          item.goods_count = val.value
+        }
+      })
+    });
+
+    bus.$on('subtract',val =>{
+      this.list.some(item =>{
+        if(item.id === val.id && val.value >= 0){
+          item.goods_count = val.value
+        }
+      })
+    })
   }
 }
 </script>

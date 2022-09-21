@@ -2,18 +2,18 @@
   <div class="footer-container">
     <!-- 左侧的全选 -->
     <div class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" id="cbFull" :checked="fullState" />
+      <input type="checkbox" class="custom-control-input" id="cbFull" :checked="fullState" @change="checkedState"/>
       <label class="custom-control-label" for="cbFull">全选</label>
     </div>
 
     <!-- 中间的合计 -->
     <div>
       <span>合计：</span>
-      <span class="total-price">￥{{ 0 }}</span>
+      <span class="total-price">￥{{ amt.toFixed(2) }}</span>
     </div>
 
     <!-- 结算按钮 -->
-    <button type="button" class="btn btn-primary btn-settle">结算（{{ 0 }}）</button>
+    <button type="button" class="btn btn-primary btn-settle">结算（{{ countNum }}）</button>
   </div>
 </template>
 
@@ -23,6 +23,20 @@ export default {
     fullState:{
       default:'',
       type:Boolean
+    },
+    amt:{
+      default:'',
+      type:Number
+    },
+    countNum:{
+      default:'',
+      type:Number
+    }
+  },
+  methods:{
+    checkedState(e){
+      var newChecked = e.target.checked
+      this.$emit("checked-change",{value : newChecked})
     }
   }
 }

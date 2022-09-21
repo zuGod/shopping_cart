@@ -20,13 +20,18 @@
         <!-- 商品价格 -->
         <span class="goods-price">￥{{ price }}</span>
         <!-- 商品的数量 -->
+        <Counter :num="count" :id="id"></Counter>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Counter from '../Counter/Counter.vue'
 export default {
+  components:{
+    Counter,
+  },
   props:{
     //将来子组件中商品的勾选状态变化之后，需要通过子传父的形式，通过父组件根据id修改对应商品的勾选状态
     id:{
@@ -48,7 +53,11 @@ export default {
     status:{
       default:true,
       type:Boolean
-    }
+    },
+    count:{
+      default:'',
+      type:Number
+    },
   },
   methods:{
     //只要复选框的选中状态发生了变化，就会调用这个处理函数
